@@ -66,6 +66,8 @@ public:
    virtual Feature copy_Feature() = 0;
    
    // Métodos añadidos para recolectar firmas y validar tipos
+   virtual Symbol get_name() = 0;
+   virtual bool is_method() = 0;
    virtual void gather_features(ClassTableP ct, class__class* curr_class) = 0;
    virtual void type_check(ClassTableP ct, SymbolTable<Symbol, Symbol> *env, class__class* curr_class) = 0;
 
@@ -117,6 +119,7 @@ public:
    tree_node *copy()		 { return copy_Case(); }
    virtual Case copy_Case() = 0;
    
+   virtual Symbol get_type_decl() = 0;
    virtual Symbol type_check(ClassTableP ct, SymbolTable<Symbol, Symbol> *env, class__class* curr_class) = 0;
 
 #ifdef Case_EXTRAS
@@ -223,6 +226,10 @@ public:
    Feature copy_Feature();
    void dump(ostream& stream, int n);
    
+   Symbol get_name() { return name; }
+   bool is_method() { return true; }
+   Formals get_formals() { return formals; }
+   Symbol get_return_type() { return return_type; }
    void gather_features(ClassTableP ct, class__class* curr_class);
    void type_check(ClassTableP ct, SymbolTable<Symbol, Symbol> *env, class__class* curr_class);
 
@@ -250,6 +257,9 @@ public:
    Feature copy_Feature();
    void dump(ostream& stream, int n);
    
+   Symbol get_name() { return name; }
+   bool is_method() { return false; }
+   Symbol get_type_decl() { return type_decl; }
    void gather_features(ClassTableP ct, class__class* curr_class);
    void type_check(ClassTableP ct, SymbolTable<Symbol, Symbol> *env, class__class* curr_class);
 
@@ -301,6 +311,7 @@ public:
    }
    Case copy_Case();
    void dump(ostream& stream, int n);
+   Symbol get_type_decl() { return type_decl; }
    Symbol type_check(ClassTableP ct, SymbolTable<Symbol, Symbol> *env, class__class* curr_class);
 
 #ifdef Case_SHARED_EXTRAS
